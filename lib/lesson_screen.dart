@@ -196,7 +196,7 @@ class _LessonScreenState extends State<LessonScreen> {
                       const SizedBox(height: 16),
                       
                       TextField(
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Your response in ${widget.languageName}',
                           border: OutlineInputBorder(),
                         ),

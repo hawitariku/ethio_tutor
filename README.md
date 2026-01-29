@@ -1,77 +1,85 @@
-# Ethio Tutor - Amharic & Oromo Language Learning App
+# Ethio Tutor 🇪🇹
 
-A mobile application for learning Amharic and Afaan Oromo languages with AI-powered tutoring assistance using Addis AI APIs.
+**Master Amharic and Afaan Oromo with your personal AI Tutor.**
 
-## Features
+Ethio Tutor is a premium language learning application designed to help users achieve fluency in Ethiopia's most spoken languages. By leveraging the advanced capabilities of **Addis AI**, the app provides real-time speech recognition, intelligent grammar correction, and natural-sounding voice feedback.
 
-- AI-powered language tutoring using Addis AI APIs
-- Support for both Amharic and Afaan Oromo languages
-- Voice recording and playback functionality
-- Real-time language practice with feedback
-- Beautiful UI optimized for Ethiopian scripts (Ge'ez)
-- Secure API key management with environment variables
-- Cross-platform compatibility (Android/iOS)
+---
 
-## Tech Stack
+## ✨ Key Features
 
-- **Flutter**: Cross-platform mobile development framework
-- **Addis AI APIs**: For language processing, STT, and TTS in Amharic and Afaan Oromo
-- **Dart**: Programming language for Flutter
-- **HTTP**: For API communications
-- **Just Audio**: For audio playback
-- **Record**: For voice recording
-- **Google Fonts**: For proper Ethiopian script rendering
-- **Flutter Dotenv**: For secure API key management
+*   **Intelligent Tutoring**: Real-time conversations with an AI that understands context, grammar, and pronunciation.
+*   **Speech-to-Text (STT)**: Speak naturally in Amharic or Afaan Oromo; our AI transcribes and analyzes your speech instantly.
+*   **Natural Voice Feedback**: Hear the AI respond in native-sounding voices to perfect your listening and pronunciation.
+*   **Premium Ge'ez Support**: Beautifully rendered Ethiopian scripts using optimized Google Fonts for maximum readability.
+*   **Personalization**: Adjust speech speed and toggle voice feedback to match your learning pace.
+*   **Structured Lessons**: Specialized modules for practicing essential phrases and vocabulary.
 
-## Setup Instructions
+---
 
-### Prerequisites
+## 🛠️ Technology Stack
 
-- Flutter SDK installed
-- Access to Addis AI API (register at addisassistant.com to get your API key)
+*   **Framework**: [Flutter](https://flutter.dev) (v3.0+)
+*   **Core AI**: [Addis AI APIs](https://addisassistant.com)
+*   **Speech Engine**: `record` & `just_audio`
+*   **Typography**: `google_fonts` (Noto Sans Ethiopic)
+*   **DevOps**: GitHub Actions (CI/CD)
 
-### Installation
+---
 
-1. Clone or download this repository
-2. Navigate to the project directory: `cd ethio_tutor`
-3. Install dependencies: `flutter pub get`
-4. Get your Addis AI API key from [addisassistant.com](https://addisassistant.com)
-5. Copy `.env.example` to `.env` and replace the placeholder with your actual API key. Do NOT commit `.env` to version control.
+## 🚀 Getting Started
 
-Security note: this repository previously contained a committed API key. The repo has been sanitized — please rotate any exposed keys in your Addis AI account.
+### 📦 Installation
 
-### Configuration
+1.  **Clone the Repository**:
+    ```bash
+    git clone https://github.com/wish628/ethio_tutor.git
+    cd ethio_tutor
+    ```
 
-1. Make sure to set up your Addis AI API key in the `.env` file
-2. Ensure your Android device/emulator has microphone permissions enabled
+2.  **Synchronize Dependencies**:
+    ```bash
+    flutter pub get
+    ```
 
-### Running the App
+3.  **Configure API Credentials**:
+    -   Obtain your API Key from [Addis Assistant](https://addisassistant.com).
+    -   Create a `.env` file in the root directory:
+        ```env
+        ADDIS_AI_API_KEY=your_key_here
+        BASE_URL=https://api.addisassistant.com/api/v1
+        ```
 
-- For development: `flutter run`
-- For release build: `flutter build apk --release`
+### 📱 Building the App
 
-The APK will be generated at `build/app/outputs/flutter-apk/app-release.apk`
+We recommend using our **GitHub Actions** pipeline to build the APK without needing a local Flutter installation:
 
-## API Endpoints Used
+1.  Push your changes to GitHub.
+2.  Go to the **Actions** tab.
+3.  Select the **"Build APK with Secrets"** workflow.
+4.  Download the resulting artifact.
 
-- `/api/v1/chat_generate` - For language tutoring conversations
-- `/api/v1/audio` - For text-to-speech conversion
+For detailed instructions, see our [GitHub Build Guide](https://github.com/wish628/ethio_tutor/blob/main/github_build_guide.md).
 
-## File Structure
+---
 
-```
-lib/
-├── main.dart          # Main UI and app entry point
-├── ai_service.dart    # Addis AI API integration
-```
+## 🔒 Security & Best Practices
 
-## Permissions
+-   **Privacy**: Audio recordings are processed securely via Addis AI and are not stored permanently on our servers.
+-   **Credentials**: Never commit your `.env` file. We include a `.gitignore` and pre-commit hooks to safeguard your API keys.
 
-The app requires the following permissions:
-- RECORD_AUDIO: For voice recording
-- INTERNET: For API calls
-- WRITE_EXTERNAL_STORAGE: For saving audio files
+---
 
-## Contributing
+## 🤝 Contributing
 
-Feel free to submit issues and enhancement requests!
+We welcome contributions from the community! Whether you're fixing bugs, adding new languages, or improving the UI, your help makes Ethio Tutor better for everyone.
+
+---
+
+## 📄 License
+
+This project is specialized for educational purposes. All rights reserved.
+
+---
+
+*Powered by [Addis AI](https://addisassistant.com)*

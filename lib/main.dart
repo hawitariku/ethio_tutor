@@ -35,7 +35,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final Record recorder = Record();
+  final AudioRecorder recorder = AudioRecorder();
   final AudioPlayer player = AudioPlayer();
 
   String chatLog = "Welcome! Press and hold the mic to speak in Amharic or Oromo. The AI tutor will respond with corrections and feedback.";
@@ -68,7 +68,7 @@ class _ChatScreenState extends State<ChatScreen> {
       if (status.isGranted) {
         final dir = await getTemporaryDirectory();
         final path = '${dir.path}/user_input_${DateTime.now().millisecondsSinceEpoch}.m4a';
-        await recorder.start(path: path);
+        await recorder.start(const RecordConfig(), path: path);
         setState(() {
           chatLog = 'Recording...';
         });
@@ -132,7 +132,7 @@ class _ChatScreenState extends State<ChatScreen> {
       setState(() => chatLog = "You said: $transcribedText\n\nGetting AI response...");
 
       // Send transcribed text to AI for tutoring feedback with retry logic
-      String responseText;
+      String responseText = "";
       int retries = 0;
       while (retries < 3) {
         try {

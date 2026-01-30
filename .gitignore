@@ -3,6 +3,7 @@
 .idea/
 .vscode/
 *.iml
+android/.gradle/
 android/key.properties
 *.jks
 .keystore

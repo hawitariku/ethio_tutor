@@ -4,6 +4,8 @@ import 'package:confetti/confetti.dart';
 import '../services/vocabulary_service.dart';
 import '../models/vocabulary_word.dart';
 import '../theme/app_colors.dart';
+import '../services/challenge_service.dart';
+import '../models/daily_challenge.dart';
 
 /// Flashcard practice screen with swipe gestures
 class FlashcardScreen extends StatefulWidget {
@@ -25,6 +27,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
   bool _showTranslation = false;
   late ConfettiController _confettiController;
   int _correctCount = 0;
+  final ChallengeService _challengeService = ChallengeService();
 
   @override
   void initState() {
@@ -41,6 +44,10 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
   void _nextCard(ReviewQuality quality) async {
     // Submit review
     await widget.vocabularyService.submitReview(widget.words[_currentIndex], quality);
+
+    // Update challenge progress
+    await _challengeService.updateProgress(ChallengeType.flashcards, 1);
+    await _challengeService.updateProgress(ChallengeType.vocabulary, 1);
 
     if (quality == ReviewQuality.good || quality == ReviewQuality.perfect) {
       _correctCount++;

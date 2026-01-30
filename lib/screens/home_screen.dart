@@ -13,12 +13,16 @@ import '../services/progress_service.dart';
 import '../theme/app_colors.dart';
 import 'vocabulary_screen.dart';
 import 'progress_screen.dart';
+import '../widgets/daily_challenge_widget.dart';
+import '../services/challenge_service.dart';
+import '../models/daily_challenge.dart';
 
 /// Main home screen with bottom navigation
 class HomeScreen extends StatefulWidget {
   final AIService ai;
+  final ValueNotifier<ThemeMode> themeNotifier;
 
-  const HomeScreen({super.key, required this.ai});
+  const HomeScreen({super.key, required this.ai, required this.themeNotifier});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -36,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
       PracticeTab(ai: widget.ai, progressService: _progressService),
       VocabularyScreen(),
       ProgressScreen(progressService: _progressService),
-      const SettingsScreen(),
+      SettingsScreen(themeNotifier: widget.themeNotifier),
     ];
   }
 
@@ -98,6 +102,7 @@ class PracticeTab extends StatefulWidget {
 class _PracticeTabState extends State<PracticeTab> {
   final AudioRecorder recorder = AudioRecorder();
   final AudioPlayer player = AudioPlayer();
+  final ChallengeService _challengeService = ChallengeService();
 
   String chatLog = "Welcome! Press and hold the mic to speak in Amharic or Oromo. The AI tutor will respond with corrections and feedback.";
   String currentLang = "am";
@@ -219,6 +224,9 @@ class _PracticeTabState extends State<PracticeTab> {
 
       setState(() => chatLog = "AI: $responseText");
 
+      // Update challenge progress
+      await _challengeService.updateProgress(ChallengeType.conversation, 1);
+
       // Track practice session
       if (_sessionStartTime != null) {
         final duration = DateTime.now().difference(_sessionStartTime!);
@@ -252,6 +260,7 @@ class _PracticeTabState extends State<PracticeTab> {
       ),
       body: Column(
         children: [
+          const DailyChallengeWidget(),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(

@@ -3,6 +3,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'ai_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'services/challenge_service.dart';
+import 'models/daily_challenge.dart';
 
 class LessonScreen extends StatefulWidget {
   final String languageCode;
@@ -27,6 +29,7 @@ class _LessonScreenState extends State<LessonScreen> {
   String _userResponse = '';
   double _speechSpeed = 1.0;
   bool _voiceFeedbackEnabled = true;
+  final ChallengeService _challengeService = ChallengeService();
 
   final List<Map<String, String>> _basicPhrases = [
     {'amharic': 'ሰላም', 'oromo': 'Akkam', 'translation': 'Hello'},
@@ -226,6 +229,10 @@ class _LessonScreenState extends State<LessonScreen> {
                               _lessonContent = response;
                               _isLoading = false;
                             });
+
+                            // Update challenge progress
+                            await _challengeService.updateProgress(ChallengeType.practice, 1);
+                            await _challengeService.updateProgress(ChallengeType.conversation, 1);
                           } catch (e) {
                             setState(() {
                               _isLoading = false;

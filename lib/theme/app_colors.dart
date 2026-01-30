@@ -11,6 +11,7 @@ class AppColors {
   static const Color primary = ethiopianGreen;
   static const Color primaryLight = Color(0xFF00C14C);
   static const Color primaryDark = Color(0xFF006B28);
+  static const Color secondary = ethiopianYellow;
   
   // Accent colors
   static const Color accent = Color(0xFFFFD700); // Gold for achievements

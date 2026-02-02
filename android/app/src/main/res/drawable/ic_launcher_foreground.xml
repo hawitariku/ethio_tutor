@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Background: Ethiopian Green -->
+    <path
+        android:fillColor="#009639"
+        android:pathData="M0,0h108v108h-108z" />
+    
+    <!-- Stylized 'E' or symbol in white -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M30,30h48v8h-48zM30,50h48v8h-48zM30,70h48v8h-48zM30,30h8v48h-8z" />
+    
+    <!-- Accent dot -->
+    <path
+        android:fillColor="#FCDC04"
+        android:pathData="M80,80m-5,0a5,5 0,1 1,10 0a5,5 0,1 1,-10 0" />
+</vector>

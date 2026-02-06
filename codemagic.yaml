@@ -13,8 +13,15 @@ workflows:
       vars:
         PACKAGE_NAME: "com.example.ethio_tutor"
     scripts:
-      - name: Set up .env
+      - name: Set up environment
         script: |
           echo "ADDIS_AI_API_KEY=$ADDIS_AI_API_KEY" > assets/.env
           echo "BASE_URL=$BASE_URL" >> assets/.env
- 
+          echo "flutter.sdk=$HOME/programs/flutter" > android/local.properties
+          echo "sdk.dir=$ANDROID_SDK_ROOT" >> android/local.properties
+      - name: Get Flutter packages
+        script: |
+          flutter pub get
+      - name: Build Android APK
+        script: |
+          flutter build apk --release --no-shrink

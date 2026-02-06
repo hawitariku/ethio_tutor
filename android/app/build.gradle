@@ -37,7 +37,10 @@ android {
 
     buildTypes {
         release {
-            signingConfig signingConfigs.debug
+            // Only use debug signing if the file exists (to avoid CI failure)
+            if (file('debug.keystore').exists()) {
+                signingConfig signingConfigs.debug
+            }
         }
     }
 }

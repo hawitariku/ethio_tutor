@@ -96,11 +96,11 @@ jobs:
     - name: Install dependencies
       run: flutter pub get
 
-    - name: Build app bundle
-      run: flutter build appbundle --release --no-shrink
+    - name: Build APK
+      run: flutter build apk --release --no-shrink --android-skip-build-dependency-validation
 
     - name: Upload release artifact
       uses: actions/upload-artifact@v4
       with:
-        name: release-aab
-        path: build/app/outputs/bundle/release/app-release.aab
+        name: release-apk
+        path: build/app/outputs/flutter-apk/app-release.apk

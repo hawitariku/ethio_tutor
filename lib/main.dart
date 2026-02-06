@@ -12,7 +12,11 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   // Load environment variables
-  await dotenv.load(fileName: '.env');
+  try {
+    await dotenv.load(fileName: 'assets/.env.secret');
+  } catch (_) {
+    await dotenv.load(fileName: 'assets/.env');
+  }
   
   // Clean old temp files at startup to reduce disk usage
   try {

@@ -1,4 +1,6 @@
-.env
+assets/.env.secret
+# assets/.env is a placeholder for CI bundling
+!assets/.env
 **/build/
 .idea/
 .vscode/

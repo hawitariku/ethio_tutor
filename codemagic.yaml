@@ -15,20 +15,6 @@ workflows:
     scripts:
       - name: Set up .env
         script: |
-          echo "ADDIS_AI_API_KEY=$ADDIS_AI_API_KEY" > .env
-          echo "BASE_URL=$BASE_URL" >> .env
-      - name: Get Flutter packages
-        script: |
-          flutter pub get
-      - name: Build Android APK
-        script: |
-          flutter build apk --release --no-shrink --android-skip-build-dependency-validation
-    artifacts:
-      - build/app/outputs/flutter-apk/*.apk
-    publishing:
-      email:
-        recipients:
-          - your-email@example.com # Update this to your email
-        notify:
-          success: true
-          failure: true
+          echo "ADDIS_AI_API_KEY=$ADDIS_AI_API_KEY" > assets/.env
+          echo "BASE_URL=$BASE_URL" >> assets/.env
+ 

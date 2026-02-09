@@ -7,7 +7,7 @@ workflows:
     max_build_duration: 60
     instance_type: mac_mini_m1 # Using M1 for fast Flutter builds
     environment:
-      flutter: stable
+      flutter: 3.24.5
       groups:
         - ai_secrets # You can create this group in Codemagic UI for ADDIS_AI_API_KEY and BASE_URL
       vars:

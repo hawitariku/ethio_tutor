@@ -26,7 +26,7 @@ dependencies:
 
 
 dependency_overrides:
-  record_linux: 1.0.5
+  record_linux: 0.7.2
 
 dev_dependencies:
   flutter_test:

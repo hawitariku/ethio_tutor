@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^1.1.0
-  record: ^5.0.0
+  record: ^4.4.4
   just_audio: ^0.9.36
   path_provider: ^2.1.1
   permission_handler: ^11.0.1

@@ -21,6 +21,7 @@ workflows:
           echo "sdk.dir=$ANDROID_SDK_ROOT" >> android/local.properties
       - name: Get Flutter packages
         script: |
+          flutter clean
           flutter pub get
       - name: Build Android APK
         script: |

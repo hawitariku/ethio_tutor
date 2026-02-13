@@ -13,6 +13,11 @@ workflows:
       vars:
         PACKAGE_NAME: "com.example.ethio_tutor"
     scripts:
+      - name: Clean generated files
+        script: |
+          rm -f android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
+          flutter clean
+          flutter pub get
       - name: Set up environment
         script: |
           echo "ADDIS_AI_API_KEY=$ADDIS_AI_API_KEY" > assets/.env

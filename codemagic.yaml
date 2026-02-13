@@ -19,15 +19,9 @@ workflows:
           echo "BASE_URL=$BASE_URL" >> assets/.env
           echo "flutter.sdk=$HOME/programs/flutter" > android/local.properties
           echo "sdk.dir=$ANDROID_SDK_ROOT" >> android/local.properties
-      - name: Backup manual plugin registrant
-        script: |
-          cp android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java /tmp/GeneratedPluginRegistrant.java.backup
       - name: Get Flutter packages
         script: |
           flutter pub get
-      - name: Restore manual plugin registrant
-        script: |
-          cp /tmp/GeneratedPluginRegistrant.java.backup android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
       - name: Build Android APK
         script: |
           flutter build apk --release --no-shrink

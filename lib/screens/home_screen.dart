@@ -100,7 +100,7 @@ class PracticeTab extends StatefulWidget {
 }
 
 class _PracticeTabState extends State<PracticeTab> {
-  final AudioRecorder recorder = AudioRecorder();
+  final Record recorder = Record();
   final AudioPlayer player = AudioPlayer();
   final ChallengeService _challengeService = ChallengeService();
 
@@ -135,7 +135,7 @@ class _PracticeTabState extends State<PracticeTab> {
       if (status.isGranted) {
         final dir = await getTemporaryDirectory();
         final path = '${dir.path}/user_input_${DateTime.now().millisecondsSinceEpoch}.m4a';
-        await recorder.start(const RecordConfig(), path: path);
+        await recorder.start(path: path);
         setState(() {
           _isRecording = true;
           chatLog = 'Recording...';

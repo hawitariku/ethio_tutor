@@ -33,17 +33,23 @@ jobs:
     - name: Flutter doctor
       run: flutter doctor -v
 
+    - name: Clean everything
+      run: |
+        flutter clean
+        cd android && ./gradlew clean && cd ..
+        rm -rf build/
+        rm -rf android/.gradle/
+        rm -rf android/app/build/
+        rm -f pubspec.lock
+
     - name: Get dependencies
       run: flutter pub get
 
-    - name: Clean previous builds
-      run: flutter clean
+    - name: Precache Android artifacts
+      run: flutter precache --android
 
-    - name: Get dependencies again
-      run: flutter pub get
-
-    - name: Build APK
-      run: flutter build apk --release
+    - name: Build APK with verbose output
+      run: flutter build apk --release --verbose
 
     - name: Upload APK
       uses: actions/upload-artifact@v4

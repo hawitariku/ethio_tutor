@@ -1,0 +1,59 @@
+name: Simple APK Build
+
+on:
+  workflow_dispatch:  # Manual trigger only
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Java 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.0'
+        channel: 'stable'
+        cache: true
+
+    - name: Create environment file
+      run: |
+        mkdir -p assets
+        echo "ADDIS_AI_API_KEY=${{ secrets.ADDIS_AI_API_KEY }}" > assets/.env.secret
+        echo "BASE_URL=${{ secrets.BASE_URL || 'https://api.addisassistant.com/api/v1' }}" >> assets/.env.secret
+
+    - name: Flutter doctor
+      run: flutter doctor -v
+
+    - name: Get dependencies
+      run: flutter pub get
+
+    - name: Clean previous builds
+      run: flutter clean
+
+    - name: Get dependencies again
+      run: flutter pub get
+
+    - name: Build APK
+      run: flutter build apk --release
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: ethio-tutor-apk
+        path: build/app/outputs/flutter-apk/app-release.apk
+        retention-days: 30
+
+    - name: Build summary
+      run: |
+        echo "✅ APK built successfully!"
+        echo "📦 File size: $(du -h build/app/outputs/flutter-apk/app-release.apk | cut -f1)"
+        echo "📁 Download from Actions artifacts"

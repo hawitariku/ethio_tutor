@@ -1,0 +1,70 @@
+name: Test API Key
+
+on:
+  workflow_dispatch:  # Manual trigger only
+
+jobs:
+  test-api:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Test Chat Generation API
+      run: |
+        echo "🔍 Testing Addis AI API key..."
+        echo "📡 Testing Chat Generation API..."
+        
+        RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+          https://api.addisassistant.com/api/v1/chat_generate \
+          -H "Content-Type: application/json" \
+          -H "X-API-Key: ${{ secrets.ADDIS_AI_API_KEY }}" \
+          -d '{"prompt":"Say hello in Amharic","target_language":"am"}')
+        
+        HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+        BODY=$(echo "$RESPONSE" | sed '$d')
+        
+        echo "Status Code: $HTTP_CODE"
+        echo "Response: $BODY"
+        
+        if [ "$HTTP_CODE" = "200" ]; then
+          echo "✅ Chat API: SUCCESS - API key is valid!"
+        elif [ "$HTTP_CODE" = "401" ]; then
+          echo "❌ Chat API: FAILED - Invalid API Key (401 Unauthorized)"
+          echo "Please update your ADDIS_AI_API_KEY secret in GitHub"
+          exit 1
+        else
+          echo "⚠️  Chat API: Unexpected status code $HTTP_CODE"
+          exit 1
+        fi
+
+    - name: Test Text-to-Speech API
+      run: |
+        echo ""
+        echo "📡 Testing Text-to-Speech API..."
+        
+        HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+          https://api.addisassistant.com/api/v1/audio \
+          -H "Content-Type: application/json" \
+          -H "X-API-Key: ${{ secrets.ADDIS_AI_API_KEY }}" \
+          -d '{"text":"ሰላም","language":"am"}')
+        
+        echo "Status Code: $HTTP_CODE"
+        
+        if [ "$HTTP_CODE" = "200" ]; then
+          echo "✅ TTS API: SUCCESS - API key is valid!"
+        elif [ "$HTTP_CODE" = "401" ]; then
+          echo "❌ TTS API: FAILED - Invalid API Key (401 Unauthorized)"
+          exit 1
+        else
+          echo "⚠️  TTS API: Unexpected status code $HTTP_CODE"
+        fi
+
+    - name: Summary
+      if: success()
+      run: |
+        echo ""
+        echo "================================================"
+        echo "✅ API KEY VALIDATION SUCCESSFUL!"
+        echo "================================================"
+        echo "Your ADDIS_AI_API_KEY secret is working correctly."
+        echo "You can now proceed with building the APK."
+        echo "================================================"

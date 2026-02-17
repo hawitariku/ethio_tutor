@@ -29,11 +29,13 @@ jobs:
       
       - name: Create .env file
         run: |
-          echo "ADDIS_AI_API_KEY=${{ secrets.ADDIS_AI_API_KEY }}" > assets/.env
-          echo "BASE_URL=${{ secrets.BASE_URL }}" >> assets/.env
+          mkdir -p assets
+          echo "ADDIS_AI_API_KEY=${{ secrets.ADDIS_AI_API_KEY }}" > assets/.env.secret
+          echo "BASE_URL=${{ secrets.BASE_URL || 'https://api.addisassistant.com/api/v1' }}" >> assets/.env.secret
       
       - name: Create local.properties
         run: |
+          mkdir -p android
           echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
           echo "sdk.dir=$ANDROID_SDK_ROOT" >> android/local.properties
       

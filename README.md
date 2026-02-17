@@ -82,4 +82,4 @@ This project is specialized for educational purposes. All rights reserved.
 
 ---
 
-*Powered by [Addis AI](https://addisassistant.com)*
+*Powered by [Addis AI](https://addisassistant.com)*# APK build ready

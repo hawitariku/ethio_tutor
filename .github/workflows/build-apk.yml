@@ -13,30 +13,43 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Set up Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
+        flutter-version: '3.24.0'
         channel: 'stable'
+        cache: true
 
     - name: Create .env file from secrets
       run: |
-        echo "ADDIS_AI_API_KEY=${{ secrets.ADDIS_AI_API_KEY }}" > .env
-        echo "BASE_URL=${{ secrets.BASE_URL || 'https://api.addisassistant.com/api/v1' }}" >> .env
+        mkdir -p assets
+        echo "ADDIS_AI_API_KEY=${{ secrets.ADDIS_AI_API_KEY }}" > assets/.env.secret
+        echo "BASE_URL=${{ secrets.BASE_URL || 'https://api.addisassistant.com/api/v1' }}" >> assets/.env.secret
 
     - name: Create local.properties
       run: |
+        mkdir -p android
         echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
+        echo "sdk.dir=$ANDROID_SDK_ROOT" >> android/local.properties
 
-    - name: Clean build environment
+    - name: Clean and prepare build environment
       run: |
         flutter clean
+        flutter doctor -v
         rm -f pubspec.lock
 
     - name: Install dependencies
       run: flutter pub get
 
     - name: Build APK (release)
-      run: flutter build apk --release --no-shrink --android-skip-build-dependency-validation
+      run: |
+        flutter build apk --release --verbose
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4

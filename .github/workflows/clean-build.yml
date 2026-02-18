@@ -1,0 +1,59 @@
+name: Clean Flutter Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.0'
+        channel: 'stable'
+
+    - name: Create environment file
+      run: |
+        mkdir -p assets
+        echo "ADDIS_AI_API_KEY=${{ secrets.ADDIS_AI_API_KEY }}" > assets/.env.secret
+        echo "BASE_URL=${{ secrets.BASE_URL || 'https://api.addisassistant.com/api/v1' }}" >> assets/.env.secret
+
+    - name: Flutter doctor
+      run: flutter doctor -v
+
+    - name: Clean everything
+      run: |
+        flutter clean
+        rm -rf android/.gradle
+        rm -rf android/app/build
+        rm -rf build
+
+    - name: Get dependencies
+      run: flutter pub get
+
+    - name: Generate plugin registrant
+      run: flutter pub run build_runner build --delete-conflicting-outputs || true
+
+    - name: Build APK with no shrink
+      run: flutter build apk --release --no-shrink
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: ethio-tutor-apk-clean
+        path: build/app/outputs/flutter-apk/app-release.apk
+        retention-days: 30
+
+    - name: Success
+      run: echo "✅ APK built successfully!"

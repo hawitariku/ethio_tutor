@@ -1,0 +1,98 @@
+name: Fix and Build APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.0'
+        channel: 'stable'
+
+    - name: Create environment file
+      run: |
+        mkdir -p assets
+        echo "ADDIS_AI_API_KEY=${{ secrets.ADDIS_AI_API_KEY }}" > assets/.env.secret
+        echo "BASE_URL=${{ secrets.BASE_URL || 'https://api.addisassistant.com/api/v1' }}" >> assets/.env.secret
+
+    - name: Clean and get dependencies
+      run: |
+        flutter clean
+        flutter pub get
+
+    - name: Create custom plugin registrant
+      run: |
+        mkdir -p android/app/src/main/java/io/flutter/plugins
+        cat > android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java << 'EOF'
+        package io.flutter.plugins;
+
+        import androidx.annotation.Keep;
+        import androidx.annotation.NonNull;
+        import io.flutter.Log;
+        import io.flutter.embedding.engine.FlutterEngine;
+
+        @Keep
+        public final class GeneratedPluginRegistrant {
+          private static final String TAG = "GeneratedPluginRegistrant";
+          
+          public static void registerWith(@NonNull FlutterEngine flutterEngine) {
+            try {
+              flutterEngine.getPlugins().add(new com.ryanheise.audio_session.AudioSessionPlugin());
+            } catch (Exception e) {
+              Log.e(TAG, "Error registering plugin audio_session", e);
+            }
+            try {
+              flutterEngine.getPlugins().add(new com.ryanheise.just_audio.JustAudioPlugin());
+            } catch (Exception e) {
+              Log.e(TAG, "Error registering plugin just_audio", e);
+            }
+            try {
+              flutterEngine.getPlugins().add(new io.flutter.plugins.pathprovider.PathProviderPlugin());
+            } catch (Exception e) {
+              Log.e(TAG, "Error registering plugin path_provider_android", e);
+            }
+            try {
+              flutterEngine.getPlugins().add(new com.baseflow.permissionhandler.PermissionHandlerPlugin());
+            } catch (Exception e) {
+              Log.e(TAG, "Error registering plugin permission_handler_android", e);
+            }
+            try {
+              flutterEngine.getPlugins().add(new com.llfbandit.record.RecordPlugin());
+            } catch (Exception e) {
+              Log.e(TAG, "Error registering plugin record", e);
+            }
+            try {
+              flutterEngine.getPlugins().add(new io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin());
+            } catch (Exception e) {
+              Log.e(TAG, "Error registering plugin shared_preferences_android", e);
+            }
+          }
+        }
+        EOF
+
+    - name: Build APK
+      run: flutter build apk --release --no-shrink
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: ethio-tutor-apk-fixed
+        path: build/app/outputs/flutter-apk/app-release.apk
+        retention-days: 30
+
+    - name: Success
+      run: echo "✅ APK built successfully with fixed plugin registrant!"

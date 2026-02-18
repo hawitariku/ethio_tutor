@@ -31,15 +31,6 @@ class AppTheme {
         ),
       ),
       
-      // Card Theme
-      cardTheme: const CardThemeData(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(16)),
-        ),
-        color: AppColors.cardLight,
-      ),
-      
       // Elevated Button Theme
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -126,15 +117,6 @@ class AppTheme {
           fontWeight: FontWeight.bold,
           color: Colors.white,
         ),
-      ),
-      
-      // Card Theme
-      cardTheme: const CardThemeData(
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(16)),
-        ),
-        color: AppColors.cardDark,
       ),
       
       // Elevated Button Theme
